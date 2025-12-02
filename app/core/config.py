@@ -3,6 +3,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    api_name: str
+    enable_docs: bool
+
     model_config = SettingsConfigDict(env_file=".env")
 
 @lru_cache
