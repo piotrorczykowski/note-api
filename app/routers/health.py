@@ -10,5 +10,5 @@ router = APIRouter(tags=["Health"])
     response_description="API status",
     response_model=HealthDto,
 )
-def healthcheck() -> HealthDto:
+def health_check() -> HealthDto:
     return {"status": "ok"}
