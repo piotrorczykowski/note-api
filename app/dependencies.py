@@ -1,11 +1,8 @@
 from typing import Iterator
 from sqlmodel import Session
-from app.core.database import SessionLocal
+from app.core.database import engine
 
 
-def get_session() -> Iterator[Session]:
-    session = SessionLocal()
-    try:
+def get_db() -> Iterator[Session]:
+    with Session(engine) as session:
         yield session
-    finally:
-        session.close()
