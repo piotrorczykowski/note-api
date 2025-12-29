@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.schemas.health import HealthDto
+from app.schemas.health import HealthResponse
 
 router = APIRouter(tags=["Health"])
 
@@ -8,7 +8,7 @@ router = APIRouter(tags=["Health"])
     "/health",
     summary="Check API Health",
     response_description="API status",
-    response_model=HealthDto,
+    response_model=HealthResponse,
 )
-def health_check() -> HealthDto:
-    return {"status": "ok"}
+def health_check() -> HealthResponse:
+    return HealthResponse(status="ok")
