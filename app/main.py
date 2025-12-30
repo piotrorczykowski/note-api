@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import health, notes
+from app.routers import health, notes, auth
 from app.core.config import get_settings
 
 
@@ -19,6 +19,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(notes.router)
+    app.include_router(auth.router)
 
     return app
 
