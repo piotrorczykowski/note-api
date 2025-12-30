@@ -7,7 +7,7 @@ from sqlalchemy import func
 class AuditMixin(SQLModel, table=False):
     created_at: datetime = Field(
         nullable=False,
-        default_factory=datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(timezone.utc),
         sa_column_kwargs={
             "server_default": func.now(),
         },
