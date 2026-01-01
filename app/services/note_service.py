@@ -1,10 +1,10 @@
 import math
 from sqlmodel import Session, col, func, or_, select
 from app.models.note import Note
-from app.schemas.note import NoteQuery, NoteUpsert
+from app.schemas.note import NoteList, NoteQuery, NoteUpsert
 
 
-def get_all_notes(db: Session, query: NoteQuery):
+def get_all_notes(db: Session, query: NoteQuery) -> NoteList:
     page = query.page
     page_size = query.page_size
     q = query.q
@@ -23,15 +23,15 @@ def get_all_notes(db: Session, query: NoteQuery):
 
     total = db.exec(select(func.count()).select_from(statement)).one()
 
-    return {
-        "data": notes,
-        "meta": {
+    return NoteList(
+        data=notes,
+        meta={
             "page": page,
             "page_size": page_size,
             "total": total,
             "total_pages": math.ceil(total / page_size),
         },
-    }
+    )
 
 
 def create_note(db: Session, note: NoteUpsert) -> Note:

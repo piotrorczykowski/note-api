@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, status
 from fastapi.params import Depends
 from sqlmodel import Session
-from app.dependencies import get_db
+from app.dependencies import get_db, get_current_user
 from app.models.note import Note
+from app.models.user import User
 from app.schemas.error import ErrorResponse
 from app.schemas.note import NoteQuery, NoteUpsert, NoteList, NoteResponse
 from app.services.note_service import (
@@ -22,7 +23,11 @@ router = APIRouter(prefix="/notes", tags=["Note"])
     response_description="List of notes",
     response_model=NoteList,
 )
-def get_all(query: NoteQuery = Depends(), db: Session = Depends(get_db)):
+def get_all(
+    query: NoteQuery = Depends(),
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> NoteList:
     return get_all_notes(db, query)
 
 
@@ -33,7 +38,11 @@ def get_all(query: NoteQuery = Depends(), db: Session = Depends(get_db)):
     status_code=status.HTTP_201_CREATED,
     response_model=NoteResponse,
 )
-def create(note: NoteUpsert, db: Session = Depends(get_db)) -> Note:
+def create(
+    note: NoteUpsert,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> Note:
     return create_note(db, note)
 
 
@@ -46,7 +55,12 @@ def create(note: NoteUpsert, db: Session = Depends(get_db)) -> Note:
     },
     response_model=NoteResponse,
 )
-def update(note_id: int, note: NoteUpsert, db: Session = Depends(get_db)) -> Note:
+def update(
+    note_id: int,
+    note: NoteUpsert,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> Note:
     updated_note = update_note(db, note_id, note)
     if not updated_note:
         raise HTTPException(status_code=404, detail="Note not found")
@@ -59,5 +73,9 @@ def update(note_id: int, note: NoteUpsert, db: Session = Depends(get_db)) -> Not
     response_description="Deletion status",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete(note_id: int, db: Session = Depends(get_db)) -> None:
+def delete(
+    note_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> None:
     delete_note(db, note_id)
