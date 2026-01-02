@@ -21,8 +21,7 @@ def get_all_user_notes(db: Session, query: NoteQuery, user: User) -> NoteList:
         )
 
     notes = db.exec(statement.offset((page - 1) * page_size).limit(page_size)).all()
-
-    total = db.exec(select(func.count()).select_from(statement)).one()
+    total = db.exec(select(func.count()).select_from(statement.subquery())).one()
 
     return NoteList(
         data=[NoteResponse.model_validate(n) for n in notes],

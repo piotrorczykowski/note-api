@@ -18,5 +18,11 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pre-commit>=4.5.1",
+    "pytest>=9.0.2",
     "ruff>=0.14.10",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

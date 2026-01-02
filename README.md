@@ -25,6 +25,11 @@ Then populate the `.env` file with required values and set up PostgreSQL.
 alembic upgrade head
 ```
 
+## Running The Tests
+```bash
+pytest
+```
+
 ## Running The App
 ```bash
 # development

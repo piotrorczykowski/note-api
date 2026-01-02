@@ -8,3 +8,12 @@ repos:
       args: [ --fix ]
     # Run the formatter.
     - id: ruff-format
+  
+- repo: local
+  hooks:
+    - id: pytest
+      name: Run pytest
+      entry: pytest -v
+      language: system
+      types: [python]
+      stages: [pre-push]
