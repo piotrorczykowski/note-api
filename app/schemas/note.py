@@ -22,6 +22,7 @@ class NoteResponse(BaseModel):
     id: int
     title: Optional[str]
     content: str
+    model_config = {"from_attributes": True}
 
 
 class NoteList(BaseModel):

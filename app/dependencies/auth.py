@@ -27,7 +27,6 @@ def get_current_user(
                 status_code=status.HTTP_401_UNAUTHORIZED,
             )
 
-        # TODO!: Move to separete service
         statement = (
             select(User)
             .where(User.id == user_id)
