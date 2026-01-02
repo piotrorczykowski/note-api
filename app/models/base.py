@@ -1,24 +1,23 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
+from sqlmodel import TIMESTAMP, Field, SQLModel
+from sqlalchemy import func
 
-from sqlmodel import Field, SQLModel
-from sqlalchemy import Column, DateTime, func
 
-
-class AuditMixin(SQLModel):
+class AuditMixin(SQLModel, table=False):
     created_at: datetime = Field(
-        default=None,
-        sa_column=Column(
-            DateTime(timezone=True),
-            nullable=False,
-            server_default=func.now(),
-        ),
+        nullable=False,
+        default_factory=lambda: datetime.now(timezone.utc),
+        sa_column_kwargs={
+            "server_default": func.now(),
+        },
+        sa_type=TIMESTAMP(timezone=True),
     )
 
     updated_at: Optional[datetime] = Field(
         default=None,
-        sa_column=Column(
-            DateTime(timezone=True),
-            onupdate=func.now(),
-        ),
+        sa_column_kwargs={
+            "onupdate": func.now(),
+        },
+        sa_type=TIMESTAMP(timezone=True),
     )

@@ -6,10 +6,11 @@ class Settings(BaseSettings):
     api_name: str
     enable_docs: bool
     db_url: str
+    jwt_secret_key: str
 
     model_config = SettingsConfigDict(env_file=".env")
 
 
 @lru_cache
 def get_settings():
-    return Settings()
+    return Settings()  # type: ignore
